@@ -1,0 +1,113 @@
+1.to touch beverages.js 
+2.to get input from command line(process.argv)
+3.to store those command line input
+4.requirements for input to save: 1.--save
+-->2.--beverage {ex:- orange,apple}
+-->3.--empId (employee Id) {ex:- 11111,12345}
+-->4.--qty (quantity) {1,2,3}
+
+output format:- Transaction Recorded:  
+Employee ID,Beverage,Quantity,Date
+11111,Orange,1,2019-11-20T05:50:28.267Z
+
+5.requirements for input query: 1.--query
+-->2.--empId (employee Id) {ex:- 11111,12345}
+
+output format:-Employee ID, Beverage, Quantity, Date
+11111,Orange,1,2019-11-20T05:50:28.267Z
+11111,Watermelon,1,2019-11-20T05:50:28.267Z
+Total: 2 Juices
+
+
+
+----------- PLANNING -----------
+ - save
+ - query
+
+ 1. Save: 
+    a. parse the Transaction details --✅
+      - convert process.argv to required data (indexOf + 1)--✅
+        take the Transaction details in an object --✅
+    b. Store the Transaction details
+      - assign in a variable - [Won't work] 
+      - write the Transaction details into a file --✅
+        - Take [] initially in the transactions.json--✅
+        - Read the existing transactions from the transactions.json file and assign to a variable--✅
+        - push the current transactions to existing transactions.--✅
+        - write the data in the variable to transactions.json--✅
+    c. Print the Transaction details on the console--✅
+      Transaction Recorded:  --✅
+      Employee ID,Beverage,Quantity,Date --✅
+      transaction.employeeId,transaction.beverage,transaction.qty,transaction.date--✅
+
+ 2. Query:
+    a. parse the Query details
+    b. Read the Transaction details from the file which we stored 
+    c. Filter only the Transactions done by the given employeeId 
+    d. Print the Query details on the console
+      Employee ID, Beverage, Quantity, Date
+11111,Orange,1,2019-11-20T05:50:28.267Z
+11111,Watermelon,1,2019-11-20T05:50:28.267Z
+Total: 2 Juices
+
+
+DATA STRUCTURE:
+  Array Of objects. Each object is a Transaction
+
+
+[{}, {}, {}, {}]
+
+
+----
+
+performSave(){
+  const transaction = parse()
+  
+}
+
+main(args){
+  operation = args[0]
+  let result = ""
+  if(operation === "--save"){
+    result = performSave()
+  }else{
+    result = performQuery()
+  }
+  console.log(result)
+}
+
+-------------------------------------------------------------
+1.in query now i need date as same as empId => i need both empId and date also so i should check for the --date in the command line 
+and as per that date i should check in the stored data
+
+chance of asking input:-
+1.node beverage.js --query --date 2019-11-20 =>  (will be asked date that should filter what all transactions done on that date)
+output should be :-
+Employee ID, Beverage, Quantity, Date
+11111,Orange,1,2019-11-20T05:50:28.267Z
+12345,Watermelon,1,2019-11-20T05:50:28.267Z
+Total: 2 Juices
+
+------------------------------------------------------
+sample input:- node beverage.js --query --date 2023-12-02 --empId 11111
+step-1 :- to take total transactions that are stored.
+step-2 :- to take transactions that are done on the given date(2023-12-02) and to store in a variable.
+step-3 :- to take transactions which filtered and stored in a variable and filter with the given employeeId(11111) and to store in another variable.
+
+-------------------------------------------------------
+sample input:- node beverage.js --query --date 2023-12-02
+step-1 :- to check with the date and filter what all transactions done on that specific date in the stored transactions.
+
+-------------------------------------------------------
+sample input:- node beverage.js --query --empId 11111
+step-1 :- to check with the empId and filter what all transactions done on that specific empId in the stored transactions.
+const getDailyTransactions = function(args){
+  if(args.includes('date') && args.includes('empId')){
+    const dailyTransactions = totalTransactions.filter(transaction => transaction.date === date);
+    const employeeDailyTransactions = dailyTransactions.filter(transaction => transaction.empId === empId);
+    employeeDailyTransactions.forEach(transaction =>{
+      result += `${transaction.employeeId},${transaction.beverage},${transaction.quantity},${transaction.date}\n`
+    totalJuices += transaction.quantity
+    })
+  }
+}
