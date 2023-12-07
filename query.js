@@ -12,21 +12,26 @@ const generateQueryDisplayFormat = function (employeeTransactions) {
   return `${result}Total:${totalJuices} juices`;
 }
 
-const getTransactionsByEmpId = function (transactions, empId) {
-  return transactions.filter(transaction => transaction.employeeId === empId)
-}
-
 const getTransactionsByDate = function (transactions, date) {
   return transactions.filter(transaction => (transaction.date.split('T')[0] === date));
 }
 
+const getTransactionsByBeverage = function (transactions, beverage) {
+  return transactions.filter(transaction => transaction.beverage === beverage);
+}
+
+const getTransactionsByEmpId = function (transactions, empId) {
+  return (transactions.filter(transaction => transaction.employeeId === empId))
+}
+
 const performQuery = function (args, filePath) {
   const transactions = readFromFile(filePath)
-  const { "--empId": empId, "--date": date } = getUserArgs(args)
+  const { "--empId": empId, "--date": date, '--beverage': beverage } = getUserArgs(args)
 
   let employeeTransactions = [...transactions];
-  employeeTransactions = empId ? getTransactionsByEmpId(employeeTransactions, +empId) : employeeTransactions
-  employeeTransactions = date ? getTransactionsByDate(employeeTransactions, date) : employeeTransactions
+  employeeTransactions = date ? getTransactionsByDate(employeeTransactions, date) : employeeTransactions;
+  employeeTransactions = empId ? getTransactionsByEmpId(employeeTransactions, +empId) : employeeTransactions;
+  employeeTransactions = beverage ? getTransactionsByBeverage(employeeTransactions, beverage) : employeeTransactions;
 
   return generateQueryDisplayFormat(employeeTransactions);
 }
