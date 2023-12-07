@@ -1,4 +1,5 @@
 const { readFromFile } = require("./fsUtils")
+const { getUserArgs } = require("./userArgs")
 
 const generateQueryDisplayFormat = function (employeeTransactions) {
   let totalJuices = 0;
@@ -18,15 +19,6 @@ const getTransactionsByEmpId = function (transactions, empId) {
 const getTransactionsByDate = function (transactions, date) {
   return transactions.filter(transaction => (transaction.date.split('T')[0] === date));
 }
-
-const getUserArgs = function (args) {
-  const userArgs = {}
-  for (let index = 0; index < args.length; index += 2) {
-    userArgs[args[index]] = args[index + 1]
-  }
-  return userArgs;
-}
-
 
 const performQuery = function (args, filePath) {
   const transactions = readFromFile(filePath)
